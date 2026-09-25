@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+</head>
+<body style="background:#0f172a; color:#fff; font-family:sans-serif; text-align:center; padding-top:20%;">
+    <h3>Mengarahkan halaman...</h3>
+
+    <script>
+    async function handleRedirect() {
+        const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+        
+        if (!path) {
+            document.body.innerHTML = "<h2>Link Engine Active</h2>";
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://pussy.great-site.net/api/get_link.php?slug=${encodeURIComponent(path)}`);
+            const result = await response.json();
+
+            if (result.status === 'success' && result.data.original_url) {
+                window.location.href = result.data.original_url;
+            } else {
+                document.body.innerHTML = "<h3>Link tidak ditemukan atau telah kadaluarsa.</h3>";
+            }
+        } catch (e) {
+            console.error(e);
+            document.body.innerHTML = "<h3>Terjadi kesalahan koneksi server.</h3>";
+        }
+    }
+
+    handleRedirect();
+    </script>
+</body>
+</html>
